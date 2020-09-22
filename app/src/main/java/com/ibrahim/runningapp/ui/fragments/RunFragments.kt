@@ -6,17 +6,15 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModel
 import androidx.navigation.fragment.findNavController
 import com.ibrahim.runningapp.R
-import com.ibrahim.runningapp.other.Constance.REQUEST_LOCATION_PERMISSION
+import com.ibrahim.runningapp.utils.Constance.REQUEST_LOCATION_PERMISSION
 import com.ibrahim.runningapp.ui.viewModel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.run_fragment.*
-import kotlinx.android.synthetic.main.setup_fragment.*
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
-import com.ibrahim.runningapp.other.TrackingUtility as TrackingUtility1
+import com.ibrahim.runningapp.utils.TrackingUtility as TrackingUtility1
 
 @AndroidEntryPoint
 class RunFragments :Fragment(R.layout.run_fragment),EasyPermissions.PermissionCallbacks {

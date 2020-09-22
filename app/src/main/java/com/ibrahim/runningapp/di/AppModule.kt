@@ -3,11 +3,10 @@ package com.ibrahim.runningapp.di
 import android.content.Context
 import androidx.room.Room
 import com.ibrahim.runningapp.dp.RunningDatabase
-import com.ibrahim.runningapp.other.Constance
+import com.ibrahim.runningapp.utils.Constance
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ActivityComponent
 import dagger.hilt.android.components.ApplicationComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Singleton

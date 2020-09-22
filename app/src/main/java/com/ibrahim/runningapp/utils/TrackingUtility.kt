@@ -1,4 +1,4 @@
-package com.ibrahim.runningapp.other
+package com.ibrahim.runningapp.utils
 
 import android.Manifest
 import android.content.Context
