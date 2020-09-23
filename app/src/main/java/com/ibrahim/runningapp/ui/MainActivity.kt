@@ -1,5 +1,6 @@
 package com.ibrahim.runningapp.ui
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -8,6 +9,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.ibrahim.runningapp.R
 import com.ibrahim.runningapp.dp.RunDao
+import com.ibrahim.runningapp.utils.Constance.ACTION_SHOW_TRACKING_FRAGMENT
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
@@ -19,6 +21,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        navigateToTrackingFragmentIfItNeeded(intent)
           setSupportActionBar(toolbar)
         bottomNavigationView.setupWithNavController(nav_host.findNavController())
         nav_host.findNavController()
@@ -30,6 +33,16 @@ class MainActivity : AppCompatActivity() {
                 }
             }
     }
+    private fun navigateToTrackingFragmentIfItNeeded(intent: Intent?){
+        if (intent?.action== ACTION_SHOW_TRACKING_FRAGMENT){
+            nav_host.findNavController().navigate(R.id.action_global_tracking_fragment)
+        }
 
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        navigateToTrackingFragmentIfItNeeded(intent)
+    }
 
 }
