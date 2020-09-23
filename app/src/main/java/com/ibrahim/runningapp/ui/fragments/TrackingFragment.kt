@@ -1,14 +1,23 @@
 package com.ibrahim.runningapp.ui.fragments
 
+import android.annotation.SuppressLint
+import android.content.Context.LOCATION_SERVICE
 import android.content.Intent
 import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
 import android.os.Bundle
 import android.view.View
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.PolylineOptions
 import com.ibrahim.runningapp.R
 import com.ibrahim.runningapp.services.TrackingService
@@ -20,14 +29,21 @@ import com.ibrahim.runningapp.utils.Constance.MAP_ZOOM
 import com.ibrahim.runningapp.utils.Constance.POLY_LINE_COLOR
 import com.ibrahim.runningapp.utils.Constance.POLY_LINE_WIDTH
 import kotlinx.android.synthetic.main.tracking_fragment.*
+import timber.log.Timber
+
 
 class TrackingFragment :Fragment(R.layout.tracking_fragment) {
     private val viewModel:MainViewModel by viewModels()
     private var isTracking=false
+     val myPosition=MutableLiveData<LatLng>()
     private var pathPoints= mutableListOf<polyline>()
+    val position = LatLng(-33.920455, 18.466941)
+    lateinit var locationManager: LocationManager
     private var map:GoogleMap?=null
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        getCurrentLocation()
+
         btnToggleRun.setOnClickListener {
             toggleRun()
         }
@@ -36,7 +52,9 @@ class TrackingFragment :Fragment(R.layout.tracking_fragment) {
         mapView.getMapAsync {
             map=it
             addAllPollyLines()
+           setMapLocation(it)
         }
+
         subscribeToObserver()
     }
 private fun sendCommandToService(action: String)=
@@ -137,5 +155,39 @@ private fun addLatestPolyLine(){
         super.onSaveInstanceState(outState)
         mapView?.onSaveInstanceState(outState)
     }
+    @SuppressLint("MissingPermission")
+    private fun setMapLocation(map: GoogleMap) {
 
+        with(map) {
+         //   map.isMyLocationEnabled=true
+
+           /* val myLocation: Unit = map.setOnMyLocationClickListener(GoogleMap.OnMyLocationClickListener {
+                val myPosition = LatLng(it.latitude, it.longitude)
+                moveCamera(CameraUpdateFactory.newLatLngZoom(myPosition, 15f))
+                addMarker(MarkerOptions().position(myPosition))
+            })*/
+            myPosition.observe(viewLifecycleOwner , Observer {
+                moveCamera(CameraUpdateFactory.newLatLngZoom(it, 15f))
+                addMarker(MarkerOptions().position(it!!))
+                mapType = GoogleMap.MAP_TYPE_NORMAL
+            })
+
+
+        }
+    }
+   @SuppressLint("MissingPermission")
+   private fun getCurrentLocation(){
+       locationManager = (requireContext().getSystemService(LOCATION_SERVICE) as LocationManager?)!!
+       locationManager?.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0L, 0f, locationListener)
+
+   }
+    private val locationListener: LocationListener = object : LocationListener {
+        override fun onLocationChanged(location: Location) {
+        var p=   LatLng(location.latitude, location.longitude)
+            myPosition.postValue(p)
+            Timber.d("my location is:${location.longitude} ,${location.latitude}")
+
+        }
+
+    }
 }
