@@ -8,6 +8,16 @@
             <set />
           </value>
         </entry>
+        <entry key="D:/Osaom/VideoPlayer/android/app/src/main/AndroidManifest.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="D:/Osaom/VideoPlayer/android/app/src/main/kotlin/com/example/VideoPlayer/MainActivity.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/../KotlinDemo/app/build.gradle">
           <value>
             <set />
@@ -39,6 +49,16 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/app/src/main/java/com/ibrahim/runningapp/di/AppModule.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/ibrahim/runningapp/di/ServiceModuel.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/ibrahim/runningapp/di/ServiceModule.kt">
           <value>
             <set />
           </value>
@@ -119,6 +139,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/app/src/main/java/com/ibrahim/runningapp/utils/Constance.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/ibrahim/runningapp/utils/TrackingUtility.kt">
           <value>
             <set />
           </value>

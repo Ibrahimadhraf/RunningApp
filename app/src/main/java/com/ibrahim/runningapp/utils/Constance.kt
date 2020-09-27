@@ -18,5 +18,6 @@ object Constance {
     const val POLY_LINE_COLOR= Color.RED
     const val POLY_LINE_WIDTH= 8f
     const val MAP_ZOOM=15F
+    const val  TIMER_UPDATE_INTERVAL=50L
 
 }

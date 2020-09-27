@@ -12,12 +12,12 @@ import com.ibrahim.runningapp.dp.RunDao
 import com.ibrahim.runningapp.utils.Constance.ACTION_SHOW_TRACKING_FRAGMENT
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
+import timber.log.Timber
 import javax.inject.Inject
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var runDao: RunDao
-    val TAG="MainActivity"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -32,6 +32,7 @@ class MainActivity : AppCompatActivity() {
                     else -> bottomNavigationView.visibility= View.GONE
                 }
             }
+
     }
     private fun navigateToTrackingFragmentIfItNeeded(intent: Intent?){
         if (intent?.action== ACTION_SHOW_TRACKING_FRAGMENT){

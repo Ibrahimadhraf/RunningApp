@@ -28,6 +28,7 @@ import com.ibrahim.runningapp.utils.Constance.ACTION_PAUSE_SERVICE
 import com.ibrahim.runningapp.utils.Constance.MAP_ZOOM
 import com.ibrahim.runningapp.utils.Constance.POLY_LINE_COLOR
 import com.ibrahim.runningapp.utils.Constance.POLY_LINE_WIDTH
+import com.ibrahim.runningapp.utils.TrackingUtility
 import kotlinx.android.synthetic.main.tracking_fragment.*
 import timber.log.Timber
 
@@ -40,6 +41,7 @@ class TrackingFragment :Fragment(R.layout.tracking_fragment) {
     val position = LatLng(-33.920455, 18.466941)
     lateinit var locationManager: LocationManager
     private var map:GoogleMap?=null
+    private var curTimeInMillis=0L
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         getCurrentLocation()
@@ -70,6 +72,12 @@ private fun sendCommandToService(action: String)=
             pathPoints = it
             addLatestPolyLine()
             moveCameraToUser()
+        })
+        TrackingService.timeRunInMillis.observe(viewLifecycleOwner , Observer {
+            curTimeInMillis=it
+            val formattedTime=TrackingUtility.getFormattedStopWatchTime(curTimeInMillis ,true)
+            Timber.d(formattedTime)
+            tvTimer.text=formattedTime
         })
     }
     private fun toggleRun(){
@@ -159,13 +167,14 @@ private fun addLatestPolyLine(){
     private fun setMapLocation(map: GoogleMap) {
 
         with(map) {
-         //   map.isMyLocationEnabled=true
+           map.isMyLocationEnabled=true
 
-           /* val myLocation: Unit = map.setOnMyLocationClickListener(GoogleMap.OnMyLocationClickListener {
+            val myLocation: Unit = map.setOnMyLocationClickListener(GoogleMap.OnMyLocationClickListener {
                 val myPosition = LatLng(it.latitude, it.longitude)
                 moveCamera(CameraUpdateFactory.newLatLngZoom(myPosition, 15f))
                 addMarker(MarkerOptions().position(myPosition))
-            })*/
+            })
+
             myPosition.observe(viewLifecycleOwner , Observer {
                 moveCamera(CameraUpdateFactory.newLatLngZoom(it, 15f))
                 addMarker(MarkerOptions().position(it!!))
@@ -178,12 +187,12 @@ private fun addLatestPolyLine(){
    @SuppressLint("MissingPermission")
    private fun getCurrentLocation(){
        locationManager = (requireContext().getSystemService(LOCATION_SERVICE) as LocationManager?)!!
-       locationManager?.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0L, 0f, locationListener)
+       locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0L, 0f, locationListener)
 
    }
     private val locationListener: LocationListener = object : LocationListener {
         override fun onLocationChanged(location: Location) {
-        var p=   LatLng(location.latitude, location.longitude)
+        val p=   LatLng(location.latitude, location.longitude)
             myPosition.postValue(p)
             Timber.d("my location is:${location.longitude} ,${location.latitude}")
 
